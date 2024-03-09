@@ -23,6 +23,10 @@ def availabel_index(board):
     return avail_idx
 
 
+def check_win(board):
+    return np.any(board[:, 0] == end)
+
+
 def availabel_index_v2(board):
     x_idx, y_idx = np.where(board == 0)
     avail_idx = list(zip(x_idx, y_idx))
@@ -100,7 +104,7 @@ def move_board(board, dir):
 
 
 def take_cmd_input():
-    guide_txt = 'Options:\n\tw (UP)    |   s (DOWN)    |   a (LEFT)    |   d (RIGHT)\n\tx (EXIT)'
+    guide_txt = 'Options:\n\tw (UP)    |   s (DOWN)    |   a (LEFT)    |   d (RIGHT)\n\tx (EXIT)\n:'
     x = input(guide_txt)
     while x.strip().lower() not in ['w', 's', 'a', 'd', 'x']:
         print('Plz, select supported options only.')
@@ -108,10 +112,10 @@ def take_cmd_input():
     return x.strip().lower()
 
 
-matrix_size = 4
+matrix_size = int(input('board size n x n:'))
 metrix = np.zeros((matrix_size, matrix_size), dtype=int)
 # metrix = np.array([2, 0, 2, 0, 0, 16, 0, 4, 0, 8, 2, 0, 0, 0, 4, 2]).reshape((4, 4))
-print(f"Lets go with:", )
+print(f"Lets go:", )
 insert_next(metrix)
 print_board(metrix)
 while True:
@@ -119,5 +123,8 @@ while True:
     if ip == 'x':
         break
     move_board(board=metrix, dir=ip)
+    if check_win(metrix):
+        print("Congratulations you won!")
+        break
     insert_next(metrix)
     print_board(metrix)
